@@ -1,24 +1,34 @@
+import styles from './navbar.module.css'
+
 const NavBar = (props) => {
     const {username} = props;
     return (
-        <div>
-            NAVBAR
-            <p>{username}</p>
-            <ul>
-                <li>Home</li>
-                <li>Home</li>
+        <div className={styles.container}>
+            <div className={styles.wrapper}>
+                <a className={styles.lgoLink} href='/'>
+                    <div className={styles.logoWrapper}>
+                        Netflix
+                    </div>
+                </a>
+            
+            <ul className={styles.navItems}>
+                <li className={styles.navItem}>Home</li>
+                <li className={styles.navItem2}>My List</li>
             </ul>
 
-            <nav>
+            <nav className={styles.navContainer}>
                 <div>
-                    <button>
-                        <p>{username}</p>
+                    <button className={styles.usernameBtn}>
+                        <p className={styles.username}>{username}</p>
+                        {/* Expand icons */}
                     </button>
-                    <div>
-                        <a>Sign out</a>
+                    <div className={styles.navDropdown}>
+                        <a className={styles.linkName}>Sign out</a>
+                        <div className={styles.lineWrapper}></div>
                     </div>
                 </div>
             </nav>
+            </div>
         </div>
     )
 };
