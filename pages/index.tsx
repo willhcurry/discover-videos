@@ -8,6 +8,18 @@ import SectionCards from '../components/card/section-cards';
 
 
 export default function Home() {
+
+  const kurzgesagtVideos = [
+    {
+      imgUrl: '/static/clifford.webp'
+    },
+    {
+      imgUrl: '/static/clifford.webp'
+    },
+    {
+      imgUrl: '/static/clifford.webp'
+    },
+  ]
   return (
     <div>
       <Head>
@@ -22,13 +34,10 @@ export default function Home() {
         subTitle='A childrens story'
         imgUrl='/static/clifford.webp' />
 
-      <SectionCards title='Kurzgesagt'/>
-
-      
-      <Card imgUrl='/static/clifford.webp' size='large' />
-      <Card imgUrl='/static/clifford.webp' size='medium' />
-      <Card imgUrl='/static/clifford.webp' size='small' />
-
+      <div className={styles.sectionWrapper}>
+        <SectionCards title='Kurzgesagt' videos={kurzgesagtVideos} size="large" />
+        <SectionCards title='Kurzgesagt' videos={kurzgesagtVideos} size="medium" />
+      </div>
     </div>
   );
 }
