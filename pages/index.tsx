@@ -4,6 +4,7 @@ import styles from "@/styles/Home.module.css";
 import Banner from '../components/banner/banner';
 import NavBar from '../components/nav/navbar';
 import Card from '../components/card/card';
+import SectionCards from '../components/card/section-cards';
 
 
 export default function Home() {
@@ -20,6 +21,8 @@ export default function Home() {
         title='Clifford the red dog'
         subTitle='A childrens story'
         imgUrl='/static/clifford.webp' />
+
+      <SectionCards title='Kurzgesagt'/>
 
       
       <Card imgUrl='/static/clifford.webp' size='large' />
