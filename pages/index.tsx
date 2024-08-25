@@ -6,20 +6,12 @@ import NavBar from '../components/nav/navbar';
 import Card from '../components/card/card';
 import SectionCards from '../components/card/section-cards';
 
+import { getVideos } from "../lib/videos";
+
 
 export default function Home() {
-
-  const kurzgesagtVideos = [
-    {
-      imgUrl: '/static/clifford.webp'
-    },
-    {
-      imgUrl: '/static/clifford.webp'
-    },
-    {
-      imgUrl: '/static/clifford.webp'
-    },
-  ]
+  const kurzgesagtVideos = getVideos();
+  
   return (
     <div>
       <Head>
