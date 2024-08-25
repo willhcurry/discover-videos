@@ -5,13 +5,13 @@ import Banner from '../components/banner/banner';
 import NavBar from '../components/nav/navbar';
 import SectionCards from '../components/card/section-cards';
 
-import { getVideos } from "../lib/videos";
+import { getPopularVideos, getVideos } from "../lib/videos";
 
 export async function getServerSideProps() {
   const dreamworksVideos = await getVideos("dreamworks trailer");
   const kurzgesagtVideos = await getVideos("kurzgesagt");
   const infographicsVideos = await getVideos("infographics channel");
-  const popularVideos = await getVideos("popular");
+  const popularVideos = await getPopularVideos();
 
   return { props: { dreamworksVideos, kurzgesagtVideos, infographicsVideos, popularVideos } }
 }
@@ -28,17 +28,20 @@ export default function Home({ dreamworksVideos, kurzgesagtVideos, infographicsV
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <NavBar username="W@William.com"/>
-      <Banner
-        title='Clifford the red dog'
-        subTitle='A childrens story'
-        imgUrl='/static/clifford.webp' />
+      <div className={styles.main}>
+            <NavBar username="W@William.com"/>
+            <Banner
+              title='Clifford the red dog'
+              subTitle='A childrens story'
+              imgUrl='/static/clifford.webp'
+            />
 
-      <div className={styles.sectionWrapper}>
-        <SectionCards title='dreamworks' videos={dreamworksVideos} size="large" />
-        <SectionCards title='kurzgesagt' videos={kurzgesagtVideos} size="small" />
-        <SectionCards title='The Infographics Show' videos={infographicsVideos} size="medium" />
-        <SectionCards title='popular' videos={dreamworksVideos} size="small" />
+        <div className={styles.sectionWrapper}>
+          <SectionCards title='dreamworks' videos={dreamworksVideos} size="large" />
+          <SectionCards title='kurzgesagt' videos={kurzgesagtVideos} size="small" />
+          <SectionCards title='The Infographics Show' videos={infographicsVideos} size="medium" />
+          <SectionCards title='popular' videos={popularVideos} size="small" />
+        </div>
       </div>
     </div>
   );
