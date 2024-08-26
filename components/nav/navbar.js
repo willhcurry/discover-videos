@@ -30,10 +30,13 @@ const NavBar = (props) => {
     return (
         <div className={styles.container}>
             <div className={styles.wrapper}>
-                <a className={styles.lgoLink} href='/'>
+                <a className={styles.logoLink} href='/'>
                     <div className={styles.logoWrapper}>
-                        <Image src={"/static/netflix.svg"} alt="netflix logo" width="128" height="34"/>
-                        Netflix
+                        <Image src={"/static/netflix.svg"}
+                            alt="netflix logo" 
+                            width="128" 
+                            height="34"
+                        />
                     </div>
                 </a>
             
