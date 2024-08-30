@@ -1,14 +1,47 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Login.module.css';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { magic } from '../lib/magic-client';
 
 const Login = () => {
+    const [email, setEmail] = useState('');
+    const [userMsg, setUserMsg] = useState('');
 
-    const handleLoginWithEmail = (e) => {
-        e.preventDefault();
-        console.log("BUTTON");
-        
+    const router = useRouter();
+
+    const handleOnChangeEmail = (e) => {
+        setUserMsg('');
+        console.log('event', e);
+        const email = e.target.value;
+        setEmail(email);
     }
+
+    const handleLoginWithEmail = async (e) => {
+    e.preventDefault();
+
+    if (email) {
+        if (email === "willhcurry@gmail.com") {
+            try {
+                const didToken = await magic.auth.loginWithMagicLink({
+                    email
+                });
+                if(didToken) {
+                    router.push('/');
+                }
+                
+            } catch (error) {
+                console.error('Something went wrong logging in', error);
+                
+            }
+        } else {
+            setUserMsg('Enter a valid email address');
+        }
+    } else {
+        setUserMsg('Enter a valid email address');
+    }
+}
 
     return (
         <div className={styles.container}>
@@ -40,9 +73,10 @@ const Login = () => {
                             type='text' 
                             placeholder='Email address' 
                             className={styles.emailInput}
+                            onChange={handleOnChangeEmail}
                         />
 
-                        <p className={styles.userMsg}></p>
+                        <p className={styles.userMsg}>{userMsg}</p>
 
                         <button 
                             onClick={handleLoginWithEmail}

@@ -7,6 +7,8 @@ import SectionCards from '../components/card/section-cards';
 
 import { getPopularVideos, getVideos } from "../lib/videos";
 
+
+
 export async function getServerSideProps() {
   const dreamworksVideos = await getVideos("dreamworks trailer");
   const kurzgesagtVideos = await getVideos("kurzgesagt");
@@ -17,8 +19,12 @@ export async function getServerSideProps() {
 }
 
 
-export default function Home({ dreamworksVideos, kurzgesagtVideos, infographicsVideos, popularVideos }) {
-  
+export default function Home({ 
+  dreamworksVideos, 
+  kurzgesagtVideos, 
+  infographicsVideos, 
+  popularVideos 
+}) {
   
   return (
     <div className={styles.container}>
