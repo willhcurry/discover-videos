@@ -9,23 +9,22 @@ import { magic } from '../../lib/magic-client';
 const NavBar = () => {
     const [showDropdown, setShowDropdown] = useState();
     const [username, setUsername] = useState('');
-
     const router = useRouter();
 
     useEffect(() => {
-  async function getUsername() {
-    try {
-      const { email } = await magic.user.getMetadata();
-      if (email) {
-        console.log(email);
-        setUsername(email);
-      }
-    } catch (error) {
-      console.log("Error retrieving email:", error);
-    }
-  }
-  getUsername();
-}, []);
+        async function getUsername() {
+            try {
+            const { email } = await magic.user.getMetadata();
+            if (email) {
+                console.log(email);
+                setUsername(email);
+            }
+            } catch (error) {
+            console.log("Error retrieving email:", error);
+            }
+        }
+        getUsername();
+    }, []);
 
     const handleOnClickHome =(e) => {
         e.preventDefault()
@@ -40,6 +39,19 @@ const NavBar = () => {
     const handleShowDropdown = (e) => {
         e.preventDefault();
         setShowDropdown(!showDropdown);
+    }
+
+    const handleSignout = async (e) => {
+        e.preventDefault();
+
+        try {
+            await magic.user.logout();
+            console.log(await magic.user.isLoggedIn());
+            router.push('/login')
+        } catch (error) {
+            console.error('Error logging out', error);
+            router.push('login')
+        }
     }
 
     return (
@@ -71,7 +83,7 @@ const NavBar = () => {
                        {showDropdown &&  
                         (<div className={styles.navDropdown}>
                                 <Link legacyBehavior href="/login">
-                                    <a className={styles.linkName}>
+                                    <a className={styles.linkName} onClick={handleSignout}>
                                         Sign out
                                     </a>
                                 </Link>

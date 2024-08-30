@@ -4,6 +4,7 @@ import styles from '../styles/Login.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { magic } from '../lib/magic-client';
+import { useEffect } from 'react';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -11,6 +12,19 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState('false');
 
     const router = useRouter();
+
+    useEffect(() => {
+        const handleComplete = () => {
+        setIsLoading(false);
+        };
+        router.events.on('routeChangeComplete', handleComplete);
+        router.events.on('routeChangeError', handleComplete);
+
+        return () => {
+        router.events.off('routeChangeComplete', handleComplete);
+        router.events.off('routeChangeError', handleComplete);
+        };
+    }, [router]);
 
     const handleOnChangeEmail = (e) => {
         setUserMsg('');
@@ -30,7 +44,6 @@ const Login = () => {
                     email
                 });
                 if(didToken) {
-                    setIsLoading(false);
                     router.push('/');
                 }
                 
@@ -97,16 +110,3 @@ const Login = () => {
 };
 
 export default Login;
-
-/*{ <Link className={styles.logoLink} href="/"> /** <--- this is the Link component **/
-//   <a>
-//     <div className={styles.logoWrapper}>
-//       <Image
-//         src="/static/netflix.svg"
-//         alt="Netflix logo"
-//         width="128px"
-//         height="34px"
-//       />
-//     </div>
-//   </a>
-// </Link> */}
