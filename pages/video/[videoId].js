@@ -1,24 +1,51 @@
 import { useRouter } from 'next/router';
 import Modal from 'react-modal';
 import styles from '../../styles/Video.module.css';
-
 import clsx from "classnames";
+import { getYoutubeVideoById } from '../../lib/videos';
 
 Modal.setAppElement('#__next')
 
-const Video = () => {
-    const router = useRouter();
-    console.log({ router });
+export async function getStaticProps() {
+    // const video = {
+    //     title: 'In a nutshell',
+    //     publishTime: '1999-01-0',
+    //     description: 'A simple explanation for the people to understand complex topics',
+    //     channelTitle: "Kurgesagt",
+    //     viewCount: 10000
+    // };
 
-    const video = {
-        title: 'In a nutshell',
-        publishTime: '1999-01-0',
-        description: 'A simple explanation for the people to understand complex topics',
-        channelTitle: "Kurgesagt",
-        viewCount: 10000
+    const videoId = 'dBxxi5XAm3U&t';
+
+    const videoArray = await getYoutubeVideoById(videoId);
+    
+
+    return {
+        props: {
+            video: videoArray.length > 0 ? videoArray[0] : {},
+        },
+
+        revalidate: 10,
     };
 
-    const { title, publishTime, description, channelTitle, viewCount } = video;
+    
+}
+
+export async function getStaticPaths() {
+    const listOfVideos = ["dBxxi5XAm3U", "fozrKigg7t0", "lbaG6JqnEZs"];
+
+    const paths = listOfVideos.map((videoId) => ({
+        params: { videoId }
+    }));
+
+    return { paths, fallback: 'blocking' }
+}
+
+const Video = ({ video }) => {
+    if (!video) return <div>Loading...</div>;
+    const router = useRouter();;
+
+    const { title, publishTime, description, channelTitle, statistics: { viewCount } } = video;
     
     return <div className={styles.container}>
                 <Modal
