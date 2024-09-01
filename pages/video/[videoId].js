@@ -3,19 +3,13 @@ import Modal from 'react-modal';
 import styles from '../../styles/Video.module.css';
 import clsx from "classnames";
 import { getYoutubeVideoById } from '../../lib/videos';
+import NavBar from '../../components/nav/navbar';
 
 Modal.setAppElement('#__next')
 
-export async function getStaticProps() {
-    // const video = {
-    //     title: 'In a nutshell',
-    //     publishTime: '1999-01-0',
-    //     description: 'A simple explanation for the people to understand complex topics',
-    //     channelTitle: "Kurgesagt",
-    //     viewCount: 10000
-    // };
+export async function getStaticProps(context) {
 
-    const videoId = 'dBxxi5XAm3U&t';
+    const videoId = context.params.videoId;
 
     const videoArray = await getYoutubeVideoById(videoId);
     
@@ -45,9 +39,11 @@ const Video = ({ video }) => {
     if (!video) return <div>Loading...</div>;
     const router = useRouter();;
 
-    const { title, publishTime, description, channelTitle, statistics: { viewCount } } = video;
+    const { title, publishTime, description, channelTitle, statistics: { viewCount } = { viewCount: 0} } = video;
     
     return <div className={styles.container}>
+
+                <NavBar />
                 <Modal
                     isOpen={true}
                     contentLabel='Watch Video'
