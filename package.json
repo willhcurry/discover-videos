@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@magic-sdk/admin": "^2.4.1",
     "classnames": "^2.5.1",
     "framer-motion": "^11.3.30",
     "magic-sdk": "^28.5.0",
