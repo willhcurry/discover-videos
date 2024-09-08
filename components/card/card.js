@@ -52,5 +52,4 @@ const Card = (props) => {
   );
 };
 
-// Export the Card component as the default export
 export default Card;

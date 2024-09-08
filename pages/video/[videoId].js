@@ -4,6 +4,8 @@ import styles from '../../styles/Video.module.css';
 import clsx from "classnames";
 import { getYoutubeVideoById } from '../../lib/videos';
 import NavBar from '../../components/nav/navbar';
+import LikeIcon from '../../components/icons/like-icon';
+import DislikeIcon from '../../components/icons/dislike-icon';
 
 // Set the app element for React Modal
 Modal.setAppElement('#__next');
@@ -77,6 +79,21 @@ const Video = ({ video }) => {
           src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
           frameBorder="0"
         ></iframe>
+
+        <div className={styles.likeDislikeBtnWrapper}>
+            <div className={styles.likeBtnWrapper}>
+                <button>
+                    <div className={styles.btnWrapper}>
+                        <LikeIcon />
+                    </div>
+                </button>
+            </div>
+            <button>
+                <div className={styles.btnWrapper}>
+                    <DislikeIcon />
+                </div>
+            </button>
+        </div>
 
         <div className={styles.modalBody}>
           <div className={styles.modalBodyContent}>
