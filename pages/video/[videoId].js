@@ -6,6 +6,7 @@ import { getYoutubeVideoById } from '../../lib/videos';
 import NavBar from '../../components/nav/navbar';
 import LikeIcon from '../../components/icons/like-icon';
 import DislikeIcon from '../../components/icons/dislike-icon';
+import { useState } from 'react';
 
 // Set the app element for React Modal
 Modal.setAppElement('#__next');
@@ -50,6 +51,10 @@ const Video = ({ video }) => {
   // Get the router object
   const router = useRouter();
 
+  // Toggle state of like and dislike
+  const [toggleLike, setToggleLike] = useState(false);
+  const [toggleDislike, setToggleDislike] = useState(false);
+  
   // Destructure video data
   const {
     title,
@@ -58,6 +63,19 @@ const Video = ({ video }) => {
     channelTitle,
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
+
+  // Toggle like and dislike handlers
+  const handleToggleDislike = () => {
+    console.log('handleToggleDislike');
+    setToggleDislike(!toggleDislike);
+    setToggleLike(toggleDislike);
+  }
+
+  const handleToggleLike = () => {
+    console.log('handleToggleLike');
+    setToggleLike(!toggleLike);
+    setToggleDislike(toggleLike);
+  }
 
   // Return the Video component
   return (
@@ -82,15 +100,15 @@ const Video = ({ video }) => {
 
         <div className={styles.likeDislikeBtnWrapper}>
             <div className={styles.likeBtnWrapper}>
-                <button>
+                <button onClick={handleToggleLike}>
                     <div className={styles.btnWrapper}>
-                        <LikeIcon />
+                        <LikeIcon selected={toggleLike} />
                     </div>
                 </button>
             </div>
-            <button>
+            <button onClick={handleToggleDislike}>
                 <div className={styles.btnWrapper}>
-                    <DislikeIcon />
+                    <DislikeIcon selected={toggleDislike} />
                 </div>
             </button>
         </div>
