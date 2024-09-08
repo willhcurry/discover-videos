@@ -2,15 +2,22 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styles from './banner.module.css';
 
+// Define the Banner component
 const Banner = (props) => {
+  // Destructure props into title, subTitle, imgUrl, and videoId
   const { title, subTitle, imgUrl, videoId } = props;
+
+  // Initialize the router
   const router = useRouter();
 
+  // Define a function to handle the play button click
   const handleOnPlay = () => {
     console.log('handleOnPlay');
+    // Navigate to the video page with the videoId
     router.push(`video/${videoId}`);
   };
 
+  // Return the Banner component
   return (
     <div className={styles.container}>
       <div className={styles.leftWrapper}>
@@ -40,6 +47,7 @@ const Banner = (props) => {
       <div
         className={styles.bannerImg}
         style={{
+          // Set the background image to the imgUrl prop
           backgroundImage: `url(${imgUrl})`,
           width: '100%',
           height: '100%',
@@ -52,4 +60,5 @@ const Banner = (props) => {
   );
 };
 
+// Export the Banner component as the default export
 export default Banner;

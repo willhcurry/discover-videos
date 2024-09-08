@@ -5,87 +5,112 @@ import clsx from "classnames";
 import { getYoutubeVideoById } from '../../lib/videos';
 import NavBar from '../../components/nav/navbar';
 
-Modal.setAppElement('#__next')
+// Set the app element for React Modal
+Modal.setAppElement('#__next');
 
+// Define getStaticProps to pre-render video pages
 export async function getStaticProps(context) {
+  // Get the video ID from the URL parameters
+  const videoId = context.params.videoId;
 
-    const videoId = context.params.videoId;
+  // Fetch video data from the YouTube API
+  const videoArray = await getYoutubeVideoById(videoId);
 
-    const videoArray = await getYoutubeVideoById(videoId);
-    
-
-    return {
-        props: {
-            video: videoArray.length > 0 ? videoArray[0] : {},
-        },
-
-        revalidate: 10,
-    };
-
-    
+  // Return the video data as props
+  return {
+    props: {
+      video: videoArray.length > 0 ? videoArray[0] : {},
+    },
+    // Revalidate the page every 10 seconds
+    revalidate: 10,
+  };
 }
 
+// Define getStaticPaths to pre-render video pages
 export async function getStaticPaths() {
-    const listOfVideos = ["dBxxi5XAm3U", "fozrKigg7t0", "lbaG6JqnEZs"];
+  // Define a list of video IDs to pre-render
+  const listOfVideos = ["dBxxi5XAm3U", "fozrKigg7t0", "lbaG6JqnEZs"];
 
-    const paths = listOfVideos.map((videoId) => ({
-        params: { videoId }
-    }));
+  // Create an array of URL parameters for each video
+  const paths = listOfVideos.map((videoId) => ({
+    params: { videoId },
+  }));
 
-    return { paths, fallback: 'blocking' }
+  // Return the paths and set fallback to 'blocking'
+  return { paths, fallback: 'blocking' };
 }
 
+// Define the Video component
 const Video = ({ video }) => {
-    if (!video) return <div>Loading...</div>;
-    const router = useRouter();;
+  // If no video data is available, display a loading message
+  if (!video) return <div>Loading...</div>;
 
-    const { title, publishTime, description, channelTitle, statistics: { viewCount } = { viewCount: 0} } = video;
-    
-    return <div className={styles.container}>
+  // Get the router object
+  const router = useRouter();
 
-                <NavBar />
-                <Modal
-                    isOpen={true}
-                    contentLabel='Watch Video'
-                    onRequestClose={() => router.back()}
-                    className={styles.modal}
-                    overlayClassName={styles.overlay}
-                >
-                    <iframe
-                        id="ytplayer"
-                        className={styles.videoPlayer}
-                        type="text/html"
-                        width="100%"
-                        height="360"
-                        src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
-                        frameBorder="0"
-                        ></iframe>
+  // Destructure video data
+  const {
+    title,
+    publishTime,
+    description,
+    channelTitle,
+    statistics: { viewCount } = { viewCount: 0 },
+  } = video;
 
-                        <div className={styles.modalBody}>
-                            <div className={styles.modalBodyContent}>
-                                <div className={styles.col1}>
-                                    <p className={styles.publishTime}>{publishTime}</p>
-                                    <p className={styles.title}>{title}</p>
-                                    <p className={styles.description}>{description}</p>
-                                </div>
-                                <div className={styles.col2}>
-                                    <p className={clsx(styles.subText, styles.subTextWrapper)}>
-                                        <span className={styles.textColor}>Cast: </span>
-                                        <span className={styles.channelTitle}>
-                                            {channelTitle}
-                                        </span>
-                                    </p>
-                                    <p className={clsx(styles.subText, styles.subTextWrapper)}>
-                                        <span className={styles.textColor}>View Count: </span>
-                                        <span className={styles.channelTitle}>
-                                            {viewCount}
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                </Modal>
+  // Return the Video component
+  return (
+    <div className={styles.container}>
+      <NavBar />
+      <Modal
+        isOpen={true}
+        contentLabel="Watch Video"
+        onRequestClose={() => router.back()}
+        className={styles.modal}
+        overlayClassName={styles.overlay}
+      >
+        <iframe
+          id="ytplayer"
+          className={styles.videoPlayer}
+          type="text/html"
+          width="100%"
+          height="360"
+          src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+          frameBorder="0"
+        ></iframe>
+
+        <div className={styles.modalBody}>
+          <div className={styles.modalBodyContent}>
+            <div className={styles.col1}>
+              <p className={styles.publishTime}>{publishTime}</p>
+              <p className={styles.title}>{title}</p>
+              <p className={styles.description}>{description}</p>
             </div>
+            <div className={styles.col2}>
+              <p
+                className={clsx(
+                  styles.subText,
+                  styles.subTextWrapper
+                )}
+              >
+                <span className={styles.textColor}>Cast: </span>
+                <span className={styles.channelTitle}>{channelTitle}</span>
+              </p>
+              <p
+                className={clsx(
+                  styles.subText,
+                  styles.subTextWrapper
+                )}
+              >
+                <span className={styles.textColor}>View Count: </span>
+                <span className={styles.channelTitle}>{viewCount}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
 };
 
+// Export the Video component as the default export
 export default Video;
