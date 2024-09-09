@@ -60,5 +60,4 @@ const Banner = (props) => {
   );
 };
 
-// Export the Banner component as the default export
 export default Banner;
