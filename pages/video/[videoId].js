@@ -7,6 +7,7 @@ import NavBar from '../../components/nav/navbar';
 import LikeIcon from '../../components/icons/like-icon';
 import DislikeIcon from '../../components/icons/dislike-icon';
 import { useState } from 'react';
+import { stringify } from 'querystring';
 
 // Set the app element for React Modal
 Modal.setAppElement('#__next');
@@ -51,6 +52,8 @@ const Video = ({ video }) => {
   // Get the router object
   const router = useRouter();
 
+  const videoId = router.query.videoId;
+
   // Toggle state of like and dislike
   const [toggleLike, setToggleLike] = useState(false);
   const [toggleDislike, setToggleDislike] = useState(false);
@@ -64,17 +67,40 @@ const Video = ({ video }) => {
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
 
-  // Toggle like and dislike handlers
-  const handleToggleDislike = () => {
-    console.log('handleToggleDislike');
-    setToggleDislike(!toggleDislike);
-    setToggleLike(toggleDislike);
+  const runRatingService = async (favorited) => {
+    return await fetch("/api/stats", {
+      method: 'POST',
+        body: JSON.stringify({
+            videoId, 
+            favorited
+        }),
+        headers: {
+            "Content-Type" : "application/json"
+        },
+    });
   }
 
-  const handleToggleLike = () => {
+  // Toggle like and dislike handlers
+  const handleToggleDislike = async () => {
+    console.log('handleToggleDislike');
+    const val = !toggleDislike;
+    setToggleDislike(val);
+    setToggleLike(toggleDislike);
+
+    const favorited = val ? 0 : 1;
+    const response = await runRatingService(favorited);
+    console.log("data", await response.json());
+  }
+
+  const handleToggleLike = async () => {
     console.log('handleToggleLike');
-    setToggleLike(!toggleLike);
+    const val = !toggleLike;
+    setToggleLike(val);
     setToggleDislike(toggleLike);
+
+    const favorited = val ? 0 : 1;
+    const response = await runRatingService(favorited);
+    console.log("data", await response.json());
   }
 
   // Return the Video component
@@ -94,7 +120,7 @@ const Video = ({ video }) => {
           type="text/html"
           width="100%"
           height="360"
-          src={`https://www.youtube.com/embed/${router.query.videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
           frameBorder="0"
         ></iframe>
 
