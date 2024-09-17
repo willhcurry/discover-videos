@@ -6,11 +6,17 @@ import NavBar from '../components/nav/navbar';
 import SectionCards from '../components/card/section-cards';
 
 // Import video fetching functions
-import { getPopularVideos, getVideos } from "../lib/videos";
+import { getPopularVideos, getVideos, getWatchItAgainVideos } from "../lib/videos";
 
 // Define getServerSideProps to pre-render the page
 export async function getServerSideProps() {
-  // Fetch videos for each section
+  const userId = 'did:ethr:0xdE8963Ce3c067bd3ef53D60Fd58e0cA44cB2ed68';
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3N1ZXIiOiJkaWQ6ZXRocjoweGRFODk2M0NlM2MwNjdiZDNlZjUzRDYwRmQ1OGUwY0E0NGNCMmVkNjgiLCJwdWJsaWNBZGRyZXNzIjoiMHhkRTg5NjNDZTNjMDY3YmQzZWY1M0Q2MEZkNThlMGNBNDRjQjJlZDY4IiwiZW1haWwiOiJ3aWxsaGN1cnJ5QGdtYWlsLmNvbSIsIm9hdXRoUHJvdmlkZXIiOm51bGwsInBob25lTnVtYmVyIjpudWxsLCJ1c2VybmFtZSI6bnVsbCwid2FsbGV0cyI6W10sImlhdCI6MTcyNjQzODAwMywiZXhwIjoxNzI3MDQyODAzLCJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsidXNlciIsImFkbWluIl0sIngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6InVzZXIiLCJ4LWhhc3VyYS11c2VyLWlkIjoiZGlkOmV0aHI6MHhkRTg5NjNDZTNjMDY3YmQzZWY1M0Q2MEZkNThlMGNBNDRjQjJlZDY4In19.QGoc80yJJQ01c39wqw9g4kMReRRQfMa50XU0zVOkvy4';
+  const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
+
+  console.log({watchItAgainVideos});
+  
+
   const dreamworksVideos = await getVideos("dreamworks trailer");
   const kurzgesagtVideos = await getVideos("kurzgesagt");
   const infographicsVideos = await getVideos("infographics channel");
@@ -23,6 +29,7 @@ export async function getServerSideProps() {
       kurzgesagtVideos,
       infographicsVideos,
       popularVideos,
+      watchItAgainVideos
     },
   };
 }
@@ -33,6 +40,7 @@ export default function Home({
   kurzgesagtVideos,
   infographicsVideos,
   popularVideos,
+  watchItAgainVideos
 }) {
   // Return the Home component
   return (
@@ -47,8 +55,8 @@ export default function Home({
         <NavBar username="W@William.com" />
         <Banner
           videoId="dBxxi5XAm3U"
-          title="Clifford the red dog"
-          subTitle="A children's story"
+          title="Kurzgesagt"
+          subTitle="Time Travel"
           imgUrl="/static/clifford.webp"
         />
 
@@ -57,6 +65,11 @@ export default function Home({
             title="dreamworks"
             videos={dreamworksVideos}
             size="large"
+          />
+          <SectionCards
+            title="Watch it again"
+            videos={watchItAgainVideos}
+            size="small"
           />
           <SectionCards
             title="kurzgesagt"
