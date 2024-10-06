@@ -7,18 +7,25 @@ import SectionCards from '../components/card/section-cards';
 
 // Import video fetching functions
 import { getPopularVideos, getVideos, getWatchItAgainVideos } from "../lib/videos";
+import { verifyToken } from "../lib/utils";
+import useRedirectUser from "../utils/redirectUser";
+
 
 // Define getServerSideProps to pre-render the page
 export async function getServerSideProps(context) {
+  const { userId, token } = await useRedirectUser(context);
 
-  const token = context.req ? context.req?.cookies.token : null;
-  console.log({token});
+  if (!userId) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
 
-  const userId = 'did:ethr:0xdE8963Ce3c067bd3ef53D60Fd58e0cA44cB2ed68';
   const watchItAgainVideos = await getWatchItAgainVideos(userId, token);
-
-  console.log({watchItAgainVideos});
-  
 
   const dreamworksVideos = await getVideos("dreamworks trailer");
   const kurzgesagtVideos = await getVideos("kurzgesagt");
@@ -43,7 +50,7 @@ export default function Home({
   kurzgesagtVideos,
   infographicsVideos,
   popularVideos,
-  watchItAgainVideos
+  watchItAgainVideos = []
 }) {
   // Return the Home component
   return (
