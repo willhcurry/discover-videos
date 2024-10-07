@@ -14,7 +14,6 @@ export default async function login(req, res) {
 
       // Get the user metadata from Magic
       const metadata = await magicAdmin.users.getMetadataByToken(didToken);
-      console.log({ metadata });
 
       // Create a JSON Web Token (JWT) with the user metadata and claims
       const token = jwt.sign(
@@ -34,7 +33,6 @@ export default async function login(req, res) {
         // Use the JWT secret from the environment variables
         process.env.JWT_SECRET
       );
-      console.log({ token });
 
       // Check if the user is new
       const isNewUserQuery = await isNewUser(token, metadata.issuer);

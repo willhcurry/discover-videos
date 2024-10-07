@@ -2,29 +2,30 @@ import Link from "next/link";
 import Card from './card';
 import styles from './section-cards.module.css';
 
-// Define the SectionCards component
 const SectionCards = (props) => {
-  // Destructure props into title, videos, and size
   const { title, videos = [], size } = props;
 
-  // Return the SectionCards component
+  const getVideoId = (video) => {
+    if (typeof video.id === 'string') return video.id;
+    if (video.id.videoId) return video.id.videoId;
+    if (video.id.channelId) return video.id.channelId;
+    if (video.id.playlistId) return video.id.playlistId;
+    return null;
+  };
+
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
       <div className={styles.cardWrapper}>
-        {videos.map((video, idx) => {
-          // Map each video to a Card component wrapped in a Link
+        {videos.map((video) => {
+          const videoId = getVideoId(video);
           return (
-            <Link legacyBehavior href={`/video/${video.id}`}>
-              <a>
-                <Card
-                  // Pass the index as the id prop
-                  id={idx}
-                  // Pass the video's imgUrl and size as props
-                  imgUrl={video.imgUrl}
-                  size={size}
-                />
-              </a>
+            <Link key={videoId} href={`/video/${videoId}`}>
+              <Card
+                id={videoId}
+                imgUrl={video.imgUrl}
+                size={size}
+              />
             </Link>
           );
         })}
@@ -33,5 +34,4 @@ const SectionCards = (props) => {
   );
 };
 
-// Export the SectionCards component as the default export
 export default SectionCards;
