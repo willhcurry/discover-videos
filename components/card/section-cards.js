@@ -3,31 +3,30 @@ import Card from './card';
 import clsx from 'classnames';
 import styles from './section-cards.module.css';
 
-const SectionCards = (props) => {
-  const { title, videos = [], size, shouldWrap = false } = props;
-
-  console.log(`Number of videos for ${title}:`, videos.length);
-
-  const getVideoId = (video) => {
-    if (typeof video.id === 'string') return video.id;
-    if (video.id.videoId) return video.id.videoId;
-    if (video.id.channelId) return video.id.channelId;
-    if (video.id.playlistId) return video.id.playlistId;
-    return null;
-  };
-
+const SectionCards = ({ title, videos = [], size, shouldWrap = false }) => {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
       <div className={clsx(styles.cardWrapper, shouldWrap && styles.wrap)}>
-        {videos.map((video) => {
-          const videoId = getVideoId(video);
+        {videos.map((video, index) => {
+          if (!video || !video.id) {
+            console.error('Invalid video object:', video);
+            return null;
+          }
+          const { kind, videoId } = video.id;
+          let href = `/video/${videoId}`;
+          if (kind === 'youtube#playlist') {
+            href = `/playlist/${videoId}`;
+          } else if (kind === 'youtube#channel') {
+            href = `/channel/${videoId}`;
+          }
           return (
-            <Link key={videoId} href={`/video/${videoId}`}>
+            <Link key={`${kind}-${videoId}`} href={href}>
               <Card
-                id={videoId}
+                id={index}
                 imgUrl={video.imgUrl}
                 size={size}
+                title={video.title}
               />
             </Link>
           );

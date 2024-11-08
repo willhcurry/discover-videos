@@ -2,22 +2,15 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import styles from './banner.module.css';
 
-// Define the Banner component
-const Banner = (props) => {
-  // Destructure props into title, subTitle, imgUrl, and videoId
-  const { title, subTitle, imgUrl, videoId } = props;
-
-  // Initialize the router
+const Banner = ({ title, subTitle, imgUrl, videoId }) => {
   const router = useRouter();
+  const fallbackImgUrl = '/static/banner-fallback.jpg'; // Add this line
 
-  // Define a function to handle the play button click
   const handleOnPlay = () => {
     console.log('handleOnPlay');
-    // Navigate to the video page with the videoId
     router.push(`video/${videoId}`);
   };
 
-  // Return the Banner component
   return (
     <div className={styles.container}>
       <div className={styles.leftWrapper}>
@@ -36,8 +29,8 @@ const Banner = (props) => {
               <Image
                 src="/static/play_arrow.svg"
                 alt="Play icon"
-                width="32"
-                height="32"
+                width={32}
+                height={32}
               />
               <span className={styles.playText}>Play</span>
             </button>
@@ -47,8 +40,7 @@ const Banner = (props) => {
       <div
         className={styles.bannerImg}
         style={{
-          // Set the background image to the imgUrl prop
-          backgroundImage: `url(${imgUrl})`,
+          backgroundImage: `url(${imgUrl}), url(${fallbackImgUrl})`,
           width: '100%',
           height: '100%',
           position: 'absolute',

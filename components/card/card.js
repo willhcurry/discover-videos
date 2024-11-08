@@ -4,13 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import cls from 'classnames';
 
-const Card = (props) => {
-  const {
-    imgUrl = '/path/to/fallback/image.jpg',
-    size = 'medium',
-    id,
-  } = props;
-
+const Card = ({ imgUrl = '/static/fallback-image.jpg', size = 'medium', id, title = 'No Title' }) => {
   const [imgSrc, setImgSrc] = useState(imgUrl);
 
   const classMap = {
@@ -20,8 +14,8 @@ const Card = (props) => {
   };
 
   const handleOnError = () => {
-    console.log("Image load error for:", imgSrc);
-    setImgSrc('/path/to/fallback/image.jpg');
+    console.log(`Image load error for: ${imgSrc}`);
+    setImgSrc('/static/fallback-image.jpg');
   };
 
   const scale = id === 0 ? { scaleY: 1.1 } : { scale: 1.1 };
@@ -34,12 +28,13 @@ const Card = (props) => {
       >
         <Image
           src={imgSrc}
-          alt={`Card ${id}`}
-          fill={true}
+          alt={title}
+          fill
           onError={handleOnError}
           className={styles.cardImg}
         />
       </motion.div>
+      <div className={styles.title}>{title}</div>
     </div>
   );
 };

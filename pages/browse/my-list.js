@@ -5,50 +5,67 @@ import useRedirectUser from '../../utils/redirectUser';
 import { getMyList } from '../../lib/videos';
 import styles from '../../styles/MyList.module.css';
 
+const MyList = ({ myListVideos = [] }) => {
+  console.log('Rendering MyList component with videos:', myListVideos);
+  
+  return (
+    <div>
+      <Head>
+        <title>My List</title>
+      </Head>
+      <main className={styles.main}>
+        <NavBar />
+        <div className={styles.sectionWrapper}>
+          {myListVideos.length > 0 ? (
+            <SectionCards
+              title="My List"
+              videos={myListVideos}
+              size="small"
+              shouldWrap
+            />
+          ) : (
+            <div className={styles.emptyMessage}>
+              No videos in your list yet!
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+};
+
 export async function getServerSideProps(context) {
+  try {
     const { userId, token } = await useRedirectUser(context);
 
     if (!userId) {
+      console.log('No userId found, redirecting to login');
+      return {
+        props: {},
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    console.log('Fetching my list videos for user:', userId);
+    const myListVideos = await getMyList(userId, token);
+    console.log('Fetched myListVideos:', myListVideos);
+
     return {
-      props: {},
-      redirect: {
-        destination: '/login',
-        permanent: false,
+      props: {
+        myListVideos,
+      },
+    };
+  } catch (error) {
+    console.error('Error in getServerSideProps:', error);
+    return {
+      props: {
+        myListVideos: [],
       },
     };
   }
-
-    const myListVideos = await getMyList(userId, token);
-    console.log('myListVideos in getServerSideProps:', myListVideos);
-    
-
-    return {
-        props: {
-            myListVideos,
-        },
-    };
-}
-
-const MyList = ({ myListVideos }) => {
-    console.log('myListVideos in MyList component:', myListVideos);
-    
-
-    return <div>
-        <Head>
-            <title>My List</title>
-        </Head>
-        <main className={styles.main}>
-            <NavBar />
-            <div classname={styles.sectionWrapper}>
-                <SectionCards
-                    title="My List"
-                    videos={myListVideos}
-                    size="small"
-                    shouldWrap
-                />
-            </div>
-        </main>
-    </div>
 }
 
 export default MyList;
