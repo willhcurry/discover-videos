@@ -4,7 +4,7 @@ import styles from './banner.module.css';
 
 const Banner = ({ title, subTitle, imgUrl, videoId }) => {
   const router = useRouter();
-  const fallbackImgUrl = '/static/banner-fallback.jpg'; // Add this line
+  const fallbackImgUrl = '/static/banner-fallback.jpg';
 
   const handleOnPlay = () => {
     console.log('handleOnPlay');
