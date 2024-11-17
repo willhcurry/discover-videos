@@ -6,8 +6,6 @@ import { getMyList } from '../../lib/videos';
 import styles from '../../styles/MyList.module.css';
 
 const MyList = ({ myListVideos = [] }) => {
-  console.log('Rendering MyList component with videos:', myListVideos);
-  
   return (
     <div>
       <Head>
@@ -39,7 +37,6 @@ export async function getServerSideProps(context) {
     const { userId, token } = await useRedirectUser(context);
 
     if (!userId) {
-      console.log('No userId found, redirecting to login');
       return {
         props: {},
         redirect: {
@@ -49,9 +46,7 @@ export async function getServerSideProps(context) {
       };
     }
 
-    console.log('Fetching my list videos for user:', userId);
     const myListVideos = await getMyList(userId, token);
-    console.log('Fetched myListVideos:', myListVideos);
 
     return {
       props: {

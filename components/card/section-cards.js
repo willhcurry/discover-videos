@@ -4,24 +4,40 @@ import clsx from 'classnames';
 import styles from './section-cards.module.css';
 
 const SectionCards = ({ title, videos = [], size, shouldWrap = false }) => {
+  console.log(`${title} - Videos to be rendered:`, videos);
+
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
       <div className={clsx(styles.cardWrapper, shouldWrap && styles.wrap)}>
         {videos.map((video, index) => {
-          if (!video || !video.id) {
-            console.error('Invalid video object:', video);
+          if (!video?.id) {
+            console.warn('Video without ID:', video);
             return null;
           }
-          const { kind, videoId } = video.id;
-          let href = `/video/${videoId}`;
-          if (kind === 'youtube#playlist') {
-            href = `/playlist/${videoId}`;
-          } else if (kind === 'youtube#channel') {
-            href = `/channel/${videoId}`;
+
+          // Add logging to check routing
+          let href;
+          const { id } = video;
+          if (id.kind === 'youtube#channel') {
+            href = `/channel/${id.channelId}`;
+          } else if (id.kind === 'youtube#playlist') {
+            href = `/playlist/${id.playlistId}`;
+          } else {
+            href = `/video/${id.videoId}`;
           }
+          
+          console.log('Link generated for item:', {
+            kind: id.kind,
+            href,
+            originalId: id
+          });
+
           return (
-            <Link key={`${kind}-${videoId}`} href={href}>
+            <Link 
+              key={`${id.kind}-${id.videoId || id.channelId || id.playlistId}`} 
+              href={href}
+            >
               <Card
                 id={index}
                 imgUrl={video.imgUrl}
