@@ -100,15 +100,16 @@ const Video = ({ video }) => {
         className={styles.modal}
         overlayClassName={styles.overlay}
       >
-        <iframe
-          id="ytplayer"
-          className={styles.videoPlayer}
-          type="text/html"
-          width="100%"
-          height="360"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com&controls=0&rel=1`}
-          frameBorder="0"
-        ></iframe>
+        <div className={styles.videoWrapper}>
+  <iframe
+      id="ytplayer"
+      className={styles.videoPlayer}
+      src={`https://www.youtube.com/embed/${videoId}?autoplay=0&origin=http://example.com`}
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    ></iframe>
+</div>
         <div className={styles.likeDislikeBtnWrapper}>
           <div className={styles.likeBtnWrapper}>
             <button onClick={handleToggleLike}>

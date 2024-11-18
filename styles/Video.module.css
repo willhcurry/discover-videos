@@ -34,10 +34,20 @@
   background: linear-gradient(to top, var(--black10), transparent 50%);
 }
 
-/** Makes video edges curvy **/
-.videoPlayer {
+.videoWrapper {
   border-radius: 10px 10px 0px 0px;
   composes: borderBoxShadow;
+  position: relative;
+  padding-top: 56.25%; /* This creates 16:9 aspect ratio */
+}
+
+.videoPlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 10px 0px 0px;
 }
 
 /** Modal body **/

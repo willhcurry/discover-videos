@@ -4,7 +4,6 @@ import clsx from 'classnames';
 import styles from './section-cards.module.css';
 
 const SectionCards = ({ title, videos = [], size, shouldWrap = false }) => {
-  console.log(`${title} - Videos to be rendered:`, videos);
 
   return (
     <section className={styles.container}>
@@ -26,12 +25,6 @@ const SectionCards = ({ title, videos = [], size, shouldWrap = false }) => {
           } else {
             href = `/video/${id.videoId}`;
           }
-          
-          console.log('Link generated for item:', {
-            kind: id.kind,
-            href,
-            originalId: id
-          });
 
           return (
             <Link 
