@@ -9,7 +9,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'img.youtube.com' },
     ],
   },
-  // Add env configuration
   env: {
     NEXT_PUBLIC_MAGIC_PUBLISHABLE_API_KEY: process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_API_KEY,
     NEXT_PUBLIC_HASURA_ADMIN_URL: process.env.NEXT_PUBLIC_HASURA_ADMIN_URL,
@@ -17,5 +16,5 @@ const nextConfig = {
   }
 };
 
-// Change from export default to module.exports
+// Use module.exports for CommonJS
 module.exports = nextConfig;
