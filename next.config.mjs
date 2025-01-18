@@ -8,7 +8,14 @@ const nextConfig = {
       { protocol: 'https', hostname: 'yt3.ggpht.com' },
       { protocol: 'https', hostname: 'img.youtube.com' },
     ],
+  },
+  // Add env configuration
+  env: {
+    NEXT_PUBLIC_MAGIC_PUBLISHABLE_API_KEY: process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_API_KEY,
+    NEXT_PUBLIC_HASURA_ADMIN_URL: process.env.NEXT_PUBLIC_HASURA_ADMIN_URL,
+    NEXT_PUBLIC_HASURA_ADMIN_SECRET: process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET
   }
 };
 
-export default nextConfig;
+// Change from export default to module.exports
+module.exports = nextConfig;
